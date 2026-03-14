@@ -1,5 +1,5 @@
 cask "spin-doctor" do
-  version "0.1.0"
+  version "0.2.1"
   sha256 :no_check
 
   url "https://github.com/rileychh/spin-doctor/releases/download/v#{version}/SpinDoctor.dmg"
