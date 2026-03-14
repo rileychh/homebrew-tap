@@ -1,0 +1,41 @@
+name: Bump casks on schedule or request
+
+on:
+  workflow_dispatch:
+    inputs:
+      casks:
+        description: Custom list of casks to livecheck and bump if outdated
+        required: false
+  schedule:
+    # Daily at 08:23 UTC+8
+    - cron: "23 0 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    env:
+      HOMEBREW_DEVELOPER: 1
+    runs-on: macos-latest
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+        with:
+          core: true
+          cask: true
+
+      - name: Bump casks
+        id: bump
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CASKS: ${{ inputs.casks }}
+        continue-on-error: true
+        run: |
+          BREW_BUMP=(brew bump --casks)
+          if [[ -n "${CASKS-}" ]]; then
+            xargs "${BREW_BUMP[@]}" <<<"${CASKS}"
+          else
+            "${BREW_BUMP[@]}" --auto --tap=rileychh/tap
+          fi
