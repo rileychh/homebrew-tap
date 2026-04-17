@@ -1,6 +1,6 @@
 cask "spin-doctor" do
-  version "0.2.1"
-  sha256 "163904b4c2afa7faf441f30a7db12a0cff2b3008b335281f283e646cefa3fe08"
+  version "0.3.1"
+  sha256 "e2108bc2137ecff54e13f31c44d3e7d483324a980ab4130e1963c11dbc114c1b"
 
   url "https://github.com/rileychh/spin-doctor/releases/download/v#{version}/SpinDoctor.dmg"
   name "Spin Doctor"
