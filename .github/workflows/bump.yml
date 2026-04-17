@@ -3,8 +3,11 @@ name: Bump formulae and casks on schedule or request
 on:
   workflow_dispatch:
     inputs:
-      targets:
-        description: Custom list of formulae/casks to livecheck and bump if outdated
+      formulae:
+        description: Space-separated formula names (overrides repo-wide enumeration)
+        required: false
+      casks:
+        description: Space-separated cask names (overrides repo-wide enumeration)
         required: false
   schedule:
     # Daily at 08:23 UTC+8
@@ -12,31 +15,41 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   bump:
-    env:
-      HOMEBREW_DEVELOPER: 1
+    if: github.repository == 'rileychh/homebrew-tap'
     runs-on: macos-latest
     steps:
       - name: Set up Homebrew
-        id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
         with:
           core: true
           cask: true
 
-      - name: Bump formulae and casks
-        id: bump
-        env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TARGETS: ${{ inputs.targets }}
-        continue-on-error: true
+      - name: Enumerate packages in tap
+        id: enumerate
         run: |
-          BREW_BUMP=(brew bump)
-          if [[ -n "${TARGETS-}" ]]; then
-            xargs "${BREW_BUMP[@]}" <<<"${TARGETS}"
-          else
-            "${BREW_BUMP[@]}" --auto --formula --tap=rileychh/tap || true
-            "${BREW_BUMP[@]}" --auto --cask --tap=rileychh/tap
-          fi
+          TAP_DIR="$(brew --repo rileychh/tap)"
+          formulae=()
+          casks=()
+          for f in "$TAP_DIR"/Formula/*.rb; do
+            [[ -e "$f" ]] || continue
+            formulae+=("$(basename "$f" .rb)")
+          done
+          for f in "$TAP_DIR"/Casks/*.rb; do
+            [[ -e "$f" ]] || continue
+            casks+=("$(basename "$f" .rb)")
+          done
+          echo "formulae=${formulae[*]}" >> "$GITHUB_OUTPUT"
+          echo "casks=${casks[*]}" >> "$GITHUB_OUTPUT"
+
+      - name: Bump
+        uses: Homebrew/actions/bump-packages@main
+        continue-on-error: true
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          formulae: ${{ inputs.formulae || steps.enumerate.outputs.formulae }}
+          casks: ${{ inputs.casks || steps.enumerate.outputs.casks }}
+          fork: false
