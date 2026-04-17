@@ -37,5 +37,6 @@ jobs:
           if [[ -n "${TARGETS-}" ]]; then
             xargs "${BREW_BUMP[@]}" <<<"${TARGETS}"
           else
-            "${BREW_BUMP[@]}" --auto --tap=rileychh/tap
+            "${BREW_BUMP[@]}" --auto --formula --tap=rileychh/tap || true
+            "${BREW_BUMP[@]}" --auto --cask --tap=rileychh/tap
           fi
