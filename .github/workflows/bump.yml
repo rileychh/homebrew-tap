@@ -49,7 +49,7 @@ jobs:
         uses: Homebrew/actions/bump-packages@main
         continue-on-error: true
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
           formulae: ${{ inputs.formulae || steps.enumerate.outputs.formulae }}
           casks: ${{ inputs.casks || steps.enumerate.outputs.casks }}
           fork: false
