@@ -7,9 +7,9 @@ class CcStatusline < Formula
   head "https://github.com/rileychh/cc-statusline.git", branch: "main"
 
   bottle do
-    root_url "https://github.com/rileychh/homebrew-tap/releases/download/cc-statusline-1.4.2"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:  "e70674f850a2224b6cd1a78efe38caeb6e6a0f17bde8eeff8fdbe57117634824"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "0b4addc1f56a7566444ed6de1081acacd3206b7808130f0716f3d7ea216ad8d1"
+    root_url "https://github.com/rileychh/homebrew-tap/releases/download/cc-statusline-1.5.0"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:  "04d064e10bd3db36b562125447b31f63a8ed4848369588672cc5897cc4e760e6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "b82f530762bc09477d6a9d30843c160623288bb0bcee1056b42e628a1a069ac2"
   end
 
   depends_on "go" => :build
