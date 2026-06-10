@@ -1,8 +1,8 @@
 class CcStatusline < Formula
   desc "Claude Code statusline renderer with Nerd Font icons and OSC 8 hyperlinks"
   homepage "https://github.com/rileychh/cc-statusline"
-  url "https://github.com/rileychh/cc-statusline/archive/refs/tags/v1.5.0.tar.gz"
-  sha256 "0f089c60fc6d9f972fdc216d7c8104e451c58922e32273c76c5716ceb384a996"
+  url "https://github.com/rileychh/cc-statusline/archive/refs/tags/v1.5.1.tar.gz"
+  sha256 "c55b07c14d2d3716c1fa406c70bb1df055991394f03752e8f62a55fe89d8faea"
   license "MIT"
   head "https://github.com/rileychh/cc-statusline.git", branch: "main"
 
